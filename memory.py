@@ -65,7 +65,7 @@ def tap(x, y):
 
 
 def draw():
-    """Draw image and tiles."""
+    """Draw image, tiles, pair counter, and victory message."""
     clear()
     goto(0, 0)
     shape(car)
@@ -85,7 +85,7 @@ def draw():
         color('black')
         write(tiles[mark], font=('Arial', 30, 'normal'))
 
-        up()
+    up()
     goto(0, 210)
     color('black')
     write(
@@ -93,6 +93,19 @@ def draw():
         align='center',
         font=('Arial', 14, 'normal'),
     )
+
+    if not any(hide):
+        up()
+        goto(0, -230)
+        color('darkgreen')
+        write(
+            "¡Ganaste! Descubriste todos los pares",
+            align='center',
+            font=('Arial', 12, 'bold'),
+        )
+        onscreenclick(None)
+        update()
+        return
 
     update()
     ontimer(draw, 100)
