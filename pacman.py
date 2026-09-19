@@ -103,8 +103,15 @@ def world():
 
             if tile == 1:
                 path.up()
-                path.goto(x + 10, y + 10)
-                path.dot(2, 'white')
+                path.goto(x + 7, y + 7)
+                path.color('lime green') 
+                path.down()
+                path.begin_fill()
+                for _ in range(4):
+                    path.forward(6) 
+                    path.left(90)
+                path.end_fill()
+                path.color('blue')
 
 
 def move():
