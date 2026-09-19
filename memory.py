@@ -14,10 +14,13 @@ from turtle import *
 
 from freegames import path
 
+GRID_SIZE = 4
+CELL_SIZE = 400 // GRID_SIZE
+
 car = path('car.gif')
-tiles = list(range(32)) * 2
+tiles = list(range(GRID_SIZE * GRID_SIZE // 2)) * 2
 state = {'mark': None, 'pairs': 0}
-hide = [True] * 64
+hide = [True] * len(tiles)
 
 
 def square(x, y):
@@ -28,19 +31,24 @@ def square(x, y):
     color('black', 'white')
     begin_fill()
     for count in range(4):
-        forward(50)
+        forward(CELL_SIZE)
         left(90)
     end_fill()
 
 
 def index(x, y):
     """Convert (x, y) coordinates to tiles index."""
-    return int((x + 200) // 50 + ((y + 200) // 50) * 8)
+    column = int((x + 200) // CELL_SIZE)
+    row = int((y + 200) // CELL_SIZE)
+    return row * GRID_SIZE + column
 
 
 def xy(count):
     """Convert tiles count to (x, y) coordinates."""
-    return (count % 8) * 50 - 200, (count // 8) * 50 - 200
+    x = (count % GRID_SIZE) * CELL_SIZE - 200
+    y = (count // GRID_SIZE) * CELL_SIZE - 200
+    return x, y
+
 
 
 def tap(x, y):
@@ -71,7 +79,7 @@ def draw():
     shape(car)
     stamp()
 
-    for count in range(64):
+    for count in range(len(tiles)):
         if hide[count]:
             x, y = xy(count)
             square(x, y)
@@ -81,9 +89,13 @@ def draw():
     if mark is not None and hide[mark]:
         x, y = xy(mark)
         up()
-        goto(x + 2, y)
+        goto(x + CELL_SIZE / 2, y + CELL_SIZE / 2 - 20)
         color('black')
-        write(tiles[mark], font=('Arial', 30, 'normal'))
+        write(
+            tiles[mark],
+            align='center',
+            font=('Arial', 30, 'normal'),
+        )
 
     up()
     goto(0, 210)
