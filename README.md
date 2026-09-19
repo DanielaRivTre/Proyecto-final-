@@ -50,4 +50,17 @@ Comprobé que el tablero inicia con 16 casillas y el contador `0/8`. Al completa
 Durante el desarrollo corregí un error de indentación en `draw()` y verifiqué la sintaxis con `python -m py_compile memory.py`. También confirmé que los commits quedaron publicados en `main`.
 
 
+Integrante 3:
+
+### Sofia MIranda Martinez — Tic Tac Toe
+
+* Matrícula: A01712539
+* Usuario: Sofia-mir
+* Archivo: tictactoe.py
+* Cambios realizados:
+  1. Se modificó el tamaño, grosor y color de los símbolos ('X' en azul y 'O' en rojo) y se centraron dentro de cada casilla.
+  2. Se agregó la validación de casillas ocupadas para evitar que se puedan sobreescribir posiciones elegidas previamente.
+  3. Se implementó la detección automática de victoria o empate para dar fin al juego al alinear 3 símbolos o llenar el tablero.
+
+
 
