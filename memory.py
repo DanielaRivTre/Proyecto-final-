@@ -1,12 +1,11 @@
-"""Memory, puzzle game of number pairs.
+"""Memory game adapted from Free Python Games.
 
-Exercises:
+Author of the modifications: Luis Gabriel Miranda Espinoza.
+Student ID: A01714017.
 
-1. Count and print how many taps occur.
-2. Decrease the number of tiles to a 4x4 grid.
-3. Detect when all tiles are revealed.
-4. Center single-digit tile.
-5. Use letters instead of tiles.
+The game uses a 4x4 board with eight matching pairs.
+It displays the number of discovered pairs and a victory message
+when all tiles have been revealed.
 """
 
 from random import *
@@ -14,14 +13,20 @@ from turtle import *
 
 from freegames import path
 
+# Keep the board 400 pixels wide while changing the number of cells.
 GRID_SIZE = 4
 CELL_SIZE = 400 // GRID_SIZE
 
 car = path('car.gif')
-tiles = list(range(GRID_SIZE * GRID_SIZE // 2)) * 2
-state = {'mark': None, 'pairs': 0}
-hide = [True] * len(tiles)
 
+# Each value appears twice, producing eight pairs on the 4x4 board.
+tiles = list(range(GRID_SIZE * GRID_SIZE // 2)) * 2
+
+# mark stores the selected tile index; pairs counts completed matches.
+state = {'mark': None, 'pairs': 0}
+
+# True means the tile is covered; matched tiles become False.
+hide = [True] * len(tiles)
 
 def square(x, y):
     """Draw white square with black outline at (x, y)."""
@@ -38,6 +43,7 @@ def square(x, y):
 
 def index(x, y):
     """Convert (x, y) coordinates to tiles index."""
+    # Shift the board origin from (-200, -200) to (0, 0).
     column = int((x + 200) // CELL_SIZE)
     row = int((y + 200) // CELL_SIZE)
     return row * GRID_SIZE + column
@@ -45,19 +51,21 @@ def index(x, y):
 
 def xy(count):
     """Convert tiles count to (x, y) coordinates."""
+    # Recover the bottom-left corner of a tile from its list index.
     x = (count % GRID_SIZE) * CELL_SIZE - 200
     y = (count // GRID_SIZE) * CELL_SIZE - 200
     return x, y
 
 
-
 def tap(x, y):
     """Update mark and hidden tiles based on tap."""
+    # Ignore clicks outside the board, including the counter area.
     if not (-200 <= x < 200 and -200 <= y < 200):
         return
 
     spot = index(x, y)
 
+    # Ignore revealed tiles so completed pairs cannot be counted again.
     if not hide[spot]:
         return
 
@@ -69,6 +77,7 @@ def tap(x, y):
         hide[spot] = False
         hide[mark] = False
         state['mark'] = None
+        # Count a pair only after matching two different covered tiles.
         state['pairs'] += 1
 
 
@@ -96,7 +105,7 @@ def draw():
             align='center',
             font=('Arial', 30, 'normal'),
         )
-
+    # Derive the total from the tile list so it follows the board size.
     up()
     goto(0, 210)
     color('black')
@@ -105,7 +114,7 @@ def draw():
         align='center',
         font=('Arial', 14, 'normal'),
     )
-
+    # The game ends when no covered tiles remain.
     if not any(hide):
         up()
         goto(0, -230)
@@ -115,6 +124,7 @@ def draw():
             align='center',
             font=('Arial', 12, 'bold'),
         )
+        # Disable input and stop scheduling redraws after victory.
         onscreenclick(None)
         update()
         return
